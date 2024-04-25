@@ -1,0 +1,374 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.navBar {
+    width: 100%;
+    height: 3.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.swip {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    align-self: flex-end;
+    padding-left: 3rem;
+}
+
+.btns {
+    display: flex;
+    align-items: center;
+    width: 30rem;
+    justify-content: flex-end;
+}
+
+.register,
+.login,
+.more,
+.logout {
+    background-color: #FF7373;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+    border: 1px solid #FF7373;
+    border-radius: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 8rem;
+    height: 2.5rem;
+    margin-right: 1rem;
+}
+
+.logout {
+    margin: 0%;
+}
+
+.login {
+    background-color: #73ABFF;
+    border: 1px solid #73ABFF;
+}
+
+
+
+.categories {
+    display: flex;
+    padding-left: 2rem;
+    padding-top: 1rem;
+    box-sizing: border-box;
+}
+
+.categoriesContainer {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.categories {
+    display: inline-flex;
+}
+
+.categoriesContainer::-webkit-scrollbar {
+    display: none;
+}
+
+
+.category {
+    position: relative;
+    width: 20%;
+    height: 20%;
+    margin: 0.7rem;
+    overflow: hidden;
+}
+
+.category .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.category:hover .overlay {
+    opacity: 1;
+}
+
+.all,
+.food,
+.healthandfitness,
+.travel,
+.movies,
+.education {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 1.5rem;
+    background-image: url('https://st3.depositphotos.com/1010280/18451/i/450/depositphotos_184518402-stock-photo-fake-news.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.food {
+    background-image: url('https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-vegetables.jpg');
+}
+
+.healthandfitness {
+    background-image: url('https://miro.medium.com/v2/resize:fit:626/0*9xySCPzY8Tm1DfvD.jpg');
+}
+
+.travel {
+    background-image: url('https://www.perrknight.com/wp-content/uploads/2023/05/Travel-Insurance-Adapting-Blog.jpg');
+}
+
+.movies {
+    background-image: url('https://img.freepik.com/free-photo/view-3d-cinema-elements_23-2150720822.jpg');
+}
+
+.education {
+    background-image: url('https://www.21kschool.com/in/wp-content/uploads/sites/4/2021/01/rptgtpxd-1396254731.jpg');
+}
+
+
+.selected {
+    border: 0.25rem solid #00ACD2;
+}
+
+
+.foodCards,
+.travelCards,
+.eduCards,
+.movieCards,
+.healthCards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    padding-bottom: 1rem;
+}
+
+.cardContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2%;
+}
+
+.top {
+    text-align: center;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+}
+
+.card {
+    width: 23%;
+    height: 30rem;
+    margin-top: 1.5rem;
+    box-sizing: border-box;
+    background-size: cover;
+    position: relative;
+}
+
+
+.cardImage {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.9rem;
+}
+
+.more {
+    width: 7rem;
+    height: 2.5rem;
+    margin-top: 1rem;
+}
+
+.toplay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
+    border-radius: 0.9rem;
+}
+
+
+.cardContent {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.heading,
+.description {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    color: #fff;
+}
+
+.heading {
+    font-size: 1.5rem;
+    padding-bottom: 0.5rem
+}
+
+
+.btnslogin {
+    display: flex;
+    width: 30rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 1rem;
+    box-sizing: border-box;
+}
+
+.bookmarkBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FF7373;
+    width: 9rem;
+    height: 2.5rem;
+    border-radius: 1.2rem;
+}
+
+.text,
+.name {
+    color: #fff;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    padding-left: 0.5rem
+}
+
+.name {
+    color: #000;
+}
+
+
+.profileImg {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0%;
+    margin: 0%;
+    border-radius: 50px;
+}
+
+.hamburger {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.selectedb {
+    border: 0.2rem solid #085CFF;
+}
+
+.logoutBox {
+    position: absolute;
+    top: 6%;
+    right: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 10rem;
+    height: 8rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    z-index: 1
+}
+
+@media only screen and (max-width: 768px) {
+    .navBar {
+        align-items: center;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    .swip {
+        display: flex;
+        font-size: 1.8rem;
+        padding: 0%;
+        align-self: center;
+    }
+
+    .hamburger {
+        width: 1.5rem;
+        height: 1rem;
+    }
+
+    .categoriesContainer,
+    .categories {
+        padding: 0%;
+        align-items: flex-start;
+    }
+
+    .all,
+    .food,
+    .healthandfitness,
+    .travel,
+    .movies,
+    .education {
+        width: 7rem;
+        height: 5rem;
+        border-radius: 1rem;
+    }
+
+    .item {
+        font-size: 1.2rem;
+    }
+
+    .foodCards,
+    .travelCards,
+    .eduCards,
+    .movieCards,
+    .healthCards {
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    .cardContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 2%;
+    }
+    
+    
+    .card {
+        width: 100%;
+        height: 30rem;
+        margin-top: 1.5rem;
+        box-sizing: border-box;
+        background-size: cover;
+        position: relative;
+    }
+    
+
+
+}

@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+}
+
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 90%;
+    transform: translate(-50%, -50%);
+}
+
+.images {
+    width: 50%;
+    height: 80%;
+    box-shadow: 0 7px 35px rgba(140, 139, 139, 0.8);
+    border-radius: 0.5rem;
+}
+
+.imgs {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5rem;
+    position: relative;
+}
+
+.sliders {
+    width: 100%;
+    height: 2rem;
+    display: flex;
+    gap: 10px;
+    box-sizing: border-box;
+    padding: 1rem;
+    padding-top: 0.5rem;
+}
+
+.slide,
+.progressBar {
+    width: 100%;
+    height: 0.3rem;
+    background-color: #474545;
+}
+
+
+.icons {
+    position: absolute;
+    top: 12%;
+    left: 25%;
+    width: 50%;
+    height: 78%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
+
+}
+
+.shareBox {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    box-sizing: border-box;
+    padding-top: 0%;
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    box-sizing: border-box;
+
+}
+
+.heading,
+.description {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff
+}
+
+.heading {
+    font-size: 1.4rem;
+    padding-bottom: 0.5rem;
+}
+
+.book {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    padding-bottom: 2rem;
+}
+
+.likeBox {
+    display: flex;
+    align-items: center;
+}
+
+.likeCount {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    color: #fff;
+    padding-left: 0.5rem
+}
+
+
+@media only screen and (max-width: 768px) {
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
+.images {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    border-radius: 0%;
+}
+
+.icons {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
+
+}
+
+.heading,
+.description {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff
+}
+
+.heading {
+    font-size: 1.5rem;
+    padding-bottom: 0.5rem;
+}
+
+}
