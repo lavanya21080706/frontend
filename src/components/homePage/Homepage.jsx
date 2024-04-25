@@ -4,6 +4,9 @@ import Story from '../story/Story'
 import bookmark from '../../assets/bookmark.png'
 import profile from '../../assets/profile.png'
 import hamburger from '../../assets/hamburger.png'
+import Register from '../register/Register'
+import Login from '../login/Login'
+import AddStory from "../addStory/AddStory";
 
 function Homepage() {
     const categories = ["All", "Food", "Health and Fitness", "Travel", "Movies", "Education"]
@@ -18,6 +21,9 @@ function Homepage() {
     const [selectBookmark, setSelectBoookmark] = useState(false)
     const [showLogout, setShowLogout] = useState(false)
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [showRegistration, setShowRegistration] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
+    const [addStory, setAddStory] = useState(false)
 
     useEffect(() => {
         const handleResize = () => {
@@ -30,6 +36,15 @@ function Homepage() {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    useEffect(() => {
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        if (isLoggedIn === 'true') {
+            setLogin(true);
+        }
+    }, []);
+
+    const userName = localStorage.getItem('username');
 
     const toggleShow = (section) => {
         switch (section) {
@@ -53,11 +68,49 @@ function Homepage() {
         }
     };
 
+    const handleNavBar = () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            localStorage.setItem('isLoggedIn', 'true');
+            setLogin(true);
+        }
+    }
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('isLoggedIn');
+        setLogin(false); 
+        setShowLogout(false); 
+    };
+
+    const handleRegisterClick = () => {
+        setShowRegistration(true);
+    };
+
+    const handleCloseRegistration = () => {
+        setShowRegistration(false);
+        handleNavBar();
+    };
+
+    const handleLoginClick = () => {
+        setShowLogin(true);
+    };
+
+    const handleCloseLogin = () => {
+        setShowLogin(false);
+        handleNavBar();
+    };
 
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);
     };
 
+    const handleAddStory = () => {
+        setAddStory(true)
+    }
+
+    const handleCloseStory=()=>{
+        setAddStory(false)
+    }
 
     const handleClick = () => {
         setSelectBoookmark(true)
@@ -159,55 +212,28 @@ function Homepage() {
                 {isMobile && (
                     <img src={hamburger} className={styles.hamburger} alt="hamburger" onClick={handleShowLogout} />
                 )}
-                {!isMobile && !login && (
+                {!isMobile && login && (
                     <div className={styles.btnslogin}>
                         <div className={`${styles.bookmarkBox} ${selectBookmark ? styles.selectedb : ''}`} onClick={handleClick}>
                             <img src={bookmark} alt="bookmark" className={styles.bookmark} />
                             <span className={styles.text}>Bookmarks</span>
                         </div>
-                        <button className={styles.register}>Add story</button>
+                        <button className={styles.register} onClick={handleAddStory}>Add story</button>
                         <img src={profile} alt="Profile" className={styles.profileImg} />
                         <img src={hamburger} className={styles.hamburger} alt="hamburger" onClick={handleShowLogout} />
                     </div>
                 )}
-                {!isMobile && login && (
+                {!isMobile && !login && (
                     <div className={styles.btns}>
-                        <button className={styles.register}>Register Now</button>
-                        <button className={styles.login}>Sign In</button>
+                        <button className={styles.register} onClick={handleRegisterClick}>Register Now</button>
+                        <button className={styles.login} onClick={handleLoginClick}>Sign In</button>
                     </div>
                 )}
             </div>
-
-
-
-            {/* <div className={styles.navBar}>
-                <span className={styles.swip}>SwipTory</span>
-                {!login ? (
-                    <div className={styles.btnslogin}>
-                        <div className={`${styles.bookmarkBox} ${selectBookmark ? styles.selectedb : ''}`} onClick={handleClick}>
-                            <img src={bookmark} alt="bookmark" className={styles.bookmark} />
-                            <span className={styles.text}>Bookmarks</span>
-                        </div>
-                        <button className={styles.register}>Add story</button>
-                        <img src={profile} alt="Profile" className={styles.profileImg} />
-                        <img src={hamburger} className={styles.hamburger} alt="hamburger" onClick={handleShowLogout} />
-                    </div>
-                ) : (
-                    <div className={styles.btns}>
-                        <button className={styles.register}>Register Now</button>
-                        <button className={styles.login}>Sign In</button>
-                    </div>
-                )
-
-                }
-
-
-            </div> */}
-
             {showLogout && (
                 <div className={styles.logoutBox}>
-                    <span className={styles.name}>Your Name</span>
-                    <button className={styles.logout}>Logout</button>
+                    <span className={styles.name}>{userName}</span>
+                    <button className={styles.logout} onClick={handleLogout}>Logout</button>
                 </div>
             )
 
@@ -347,7 +373,17 @@ function Homepage() {
                 <Story onClose={() => setStory(false)} />
             )}
 
+            {showRegistration && (
+                <Register onClose={handleCloseRegistration} />
+            )}
 
+            {showLogin && (
+                <Login onClose={handleCloseLogin} />
+            )}
+
+            {addStory && (
+                <AddStory onClose={handleCloseStory} />
+            )}
 
         </div>
     )

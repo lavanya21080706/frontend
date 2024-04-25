@@ -4,58 +4,76 @@ import cancel from '../../assets/cancel.png'
 import show from '../../assets/show.png'
 import hide from '../../assets/hide.png'
 import { userLogin } from '../../apis/Auth'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function Login() {
+function Login({onClose}) {
     const [showPassword, setShowPassword] = useState(false);
     const [data, setData] = useState({
         name: '',
         password: '',
     });
+    const [errorMessage, setErrorMessage] = useState('');
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-
-    const handleLogin = (e) => {
-        setData({ ...data, [e.target.name]: e.target.value });
-        console.log(data)
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setData({ ...data, [name]: value });
     };
 
-
-    const handleChange = async ()=>{
-        console.log("hi")     
-        console.log(data)
-    try {
-        const response = await userLogin({ ...data });
-        console.log("Login API response:", response);
-
-        if (response && response.success) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('username', response.name);
-            // navigate('/');
-        } else {
-            // Handle unsuccessful login (optional)
-            console.log("Login unsuccessful:", response ? response.errorMessage : "Response is undefined");
+    const handleClose = () => {
+        onClose(); 
+    };
+    const handleChange = async () => {
+        if (!data.name || !data.password) {
+            setErrorMessage('Please fill in both username and password fields');
+            return;
         }
-    } catch (error) {
-        console.error("Error in login API:", error);
-    }
-    }
-
+    
+        try {
+            const response = await userLogin({ ...data });
+    
+            if (response && response.success) {
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('username', response.name);
+                toast.success('User Logged In successfully');
+                handleClose();
+            } else {
+                if (response.status === 404) {
+                    setErrorMessage('Invalid username. Please enter a valid username.');
+                } else if (response.status === 401) {
+                    setErrorMessage('Invalid password. Please enter a valid password.');
+                } else {
+                    setErrorMessage('Invalid credentials. Please try again.');
+                }
+            }
+        } catch (error) {
+            // console.error("Error in login API:", error);
+            if (error.response && error.response.status === 401) {
+                setErrorMessage('Please enter a valid password.');
+            } 
+            if(error.response && error.response.status === 404) {
+                setErrorMessage('Please enter a valid username.');
+            }
+        }
+    };
+    
     
     return (
         <div>
             <div className={styles.container}>
                 <div className={styles.loginBox}>
                     <div className={styles.imgBox}>
-                        <img src={cancel} alt="cancel Img" className={styles.cancel} />
+                        <img src={cancel} alt="cancel Img" className={styles.cancel} onClick={onClose}/>
                     </div>
                     <h2 className={styles.heading}>Login to SwipTory</h2>
                     <form className={styles.formBox}>
                         <div className={styles.username}>
                             <label className={styles.labels}>Username</label>
-                            <input type="text" placeholder="Enter username" className={styles.inputBox} value={data.name} name="name" onChange={(e)=>{handleLogin(e)}}/>
+                            <input type="text" placeholder="Enter username" className={styles.inputBox} value={data.name} name="name" onChange={handleInputChange}/>
                         </div>
                         <div className={styles.pass}>
                             <label className={styles.labels}>Password</label>
@@ -66,7 +84,7 @@ function Login() {
                                     className={styles.inputpBox}
                                     value={data.password}
                                     name="password"
-                                    onChange={(e)=>{handleLogin(e)}}
+                                    onChange={handleInputChange}
                                 />
                                 <img
                                     src={showPassword ? hide : show}
@@ -77,6 +95,7 @@ function Login() {
                             </div>
                         </div>
                     </form>
+                    {errorMessage && <span className={styles.error}>{errorMessage}</span>}
                     <button className={styles.loginBtn} onClick={handleChange} >Login</button>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './AddStory.module.css';
 import cancel from '../../assets/cancel.png'
 
-function AddStory() {
+function AddStory({onClose}) {
     const [slideCount, setSlideCount] = useState(3);
     const [slides, setSlides] = useState(Array.from({ length: 3 }, () => ({ heading: '', desc: '', image: '', cat: '' })));
     const [selectedSlide, setSelectedSlide] = useState(0);
@@ -97,7 +97,7 @@ function AddStory() {
         <div className={styles.overlay}>
             <div className={styles.container}>
                 <div className={styles.imgBox}>
-                    <img src={cancel} alt="cancel Img" className={styles.cancel} />
+                    <img src={cancel} alt="cancel Img" className={styles.cancel} onClick={onClose}/>
                     {isMobile ? (
                          <span className={styles.six}>Add story to feed</span>
                     ):(
