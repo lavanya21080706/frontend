@@ -8,6 +8,8 @@ import Register from '../register/Register'
 import Login from '../login/Login'
 import AddStory from "../addStory/AddStory";
 import cancel from '../../assets/cancelImg.png'
+import { getAllData } from "../../apis/Story";
+import { getDataByCategory } from "../../apis/Story";
 
 function Homepage() {
     const categories = ["All", "Food", "Health and Fitness", "Travel", "Movies", "Education"]
@@ -26,6 +28,85 @@ function Homepage() {
     const [showLogin, setShowLogin] = useState(false);
     const [addStory, setAddStory] = useState(false)
     const [showLogoutMob, setShowLogoutMob] = useState(false)
+
+    const [foodCards, setFoodCards] = useState([]);
+    const [healthCards, setHealthCards] = useState([]);
+    const [travelCards, setTravelCards] = useState([]);
+    const [movieCards, setMovieCards] = useState([]);
+    const [eduCards, setEduCards] = useState([]);
+
+
+    const fetchCardsData = async () => {
+        try {
+            const foodResponse = await getDataByCategory("food");
+            if (foodResponse && Array.isArray(foodResponse)) {
+                const cardsData = foodResponse.map(item => ({
+                    id: item._id, // Assuming each item has an `_id` property
+                    heading: item.slides[0].heading,
+                    description: item.slides[0].description,
+                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                }));
+                // console.log('')
+                setFoodCards(cardsData);
+            }
+
+            const healthResponse = await getDataByCategory("health and fitness");
+
+            console.log('health', healthResponse)
+            if (healthResponse && Array.isArray(healthResponse)) {
+                const cardsData = healthResponse.map(item => ({
+                    id: item._id, // Assuming each item has an `_id` property
+                    heading: item.slides[0].heading,
+                    description: item.slides[0].description,
+                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                }));
+                setHealthCards(cardsData);
+            }
+
+            const travelResponse = await getDataByCategory("travel");
+            console.log('travel', travelResponse)
+            if (travelResponse && Array.isArray(travelResponse)) {
+                const cardsData = travelResponse.map(item => ({
+                    id: item._id, // Assuming each item has an `_id` property
+                    heading: item.slides[0].heading,
+                    description: item.slides[0].description,
+                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                }));
+                setTravelCards(cardsData);
+            }
+
+            const movieResponse = await getDataByCategory("movies");
+            console.log('movies', movieResponse)
+            if (movieResponse && Array.isArray(movieResponse)) {
+                const cardsData = movieResponse.map(item => ({
+                    id: item._id, // Assuming each item has an `_id` property
+                    heading: item.slides[0].heading,
+                    description: item.slides[0].description,
+                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                }));
+                setMovieCards(cardsData);
+            }
+
+            const eduResponse = await getDataByCategory("education");
+            if (eduResponse && Array.isArray(eduResponse)) {
+                const cardsData = eduResponse.map(item => ({
+                    id: item._id, // Assuming each item has an `_id` property
+                    heading: item.slides[0].heading,
+                    description: item.slides[0].description,
+                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                }));
+                setEduCards(cardsData);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+
+    useEffect(() => {
+        fetchCardsData();
+    }, []);
 
     useEffect(() => {
         const handleResize = () => {
@@ -53,7 +134,7 @@ function Homepage() {
             case "food":
                 setShowFood(!showFood);
                 break;
-            case "health":
+            case "healthandfitness":
                 setShowHealth(!showHealth);
                 break;
             case "travel":
@@ -102,16 +183,13 @@ function Homepage() {
         handleNavBar();
     };
 
-    const handleCategoryClick = (category) => {
-        setSelectedCategory(category);
-    };
-
     const handleAddStory = () => {
         setAddStory(true)
     }
 
     const handleCloseStory = () => {
         setAddStory(false)
+        fetchCardsData();
     }
 
     const handleClick = () => {
@@ -121,81 +199,6 @@ function Homepage() {
     const handleShowLogout = () => {
         setShowLogout(!showLogout)
     }
-    const cards = [
-        {
-            heading: "Delicious Pizza",
-            description: "Enjoy the taste of our freshly baked pizza topped with your favorite ingredients.",
-            images: [
-                "https://i.pinimg.com/736x/5e/77/b5/5e77b58088c2123a778d6c6a00941b75.jpg",
-                "pizza2.jpg",
-                "pizza3.jpg"
-            ]
-        },
-        {
-            heading: "Tasty Burger",
-            description: "Savor the juiciness of our signature burger, made with the finest ingredients.",
-            images: [
-                "https://i.pinimg.com/originals/ad/4c/02/ad4c02f4b76fdcfb885bb911d697a84d.jpg",
-                "burger2.jpg",
-                "burger3.jpg"
-            ]
-        },
-        {
-            heading: "Tasty Burger",
-            description: "Savor the juiciness of our signature burger, made with the finest ingredients.",
-            images: [
-                "https://i.pinimg.com/564x/a9/da/b5/a9dab5bfa391198b3f8b144e7374b17c.jpg",
-                "burger2.jpg",
-                "burger3.jpg"
-            ]
-        },
-        {
-            heading: "Tasty Burger",
-            description: "Savor the juiciness of our signature burger, made with the finest ingredients.",
-            images: [
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1-XRn0RNNTylhGZ0QVDVY2AgllUeRFsxVV8v5yu0m3A&s",
-                "burger2.jpg",
-                "burger3.jpg"
-            ]
-        },
-
-        {
-            heading: "Tasty Burger",
-            description: "Savor the juiciness of our signature burger, made with the finest ingredients.",
-            images: [
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1-XRn0RNNTylhGZ0QVDVY2AgllUeRFsxVV8v5yu0m3A&s",
-                "burger2.jpg",
-                "burger3.jpg"
-            ]
-        },
-        {
-            heading: "Tasty Burger",
-            description: "Savor the juiciness of our signature burger, made with the finest ingredients.",
-            images: [
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1-XRn0RNNTylhGZ0QVDVY2AgllUeRFsxVV8v5yu0m3A&s",
-                "burger2.jpg",
-                "burger3.jpg"
-            ]
-        },
-        {
-            heading: "Tasty Burger",
-            description: "Savor the juiciness of our signature burger, made with the finest ingredients.",
-            images: [
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1-XRn0RNNTylhGZ0QVDVY2AgllUeRFsxVV8v5yu0m3A&s",
-                "burger2.jpg",
-                "burger3.jpg"
-            ]
-        },
-        {
-            heading: "Tasty Burger",
-            description: "Savor the juiciness of our signature burger, made with the finest ingredients.",
-            images: [
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1-XRn0RNNTylhGZ0QVDVY2AgllUeRFsxVV8v5yu0m3A&s",
-                "burger2.jpg",
-                "burger3.jpg"
-            ]
-        },
-    ];
 
     const handleStory = () => {
         setStory(true);
@@ -204,6 +207,12 @@ function Homepage() {
     const handleShowLogoutMob = () => {
         setShowLogoutMob(true)
     }
+
+    const handleCategoryClick = (category) => {
+        setSelectedCategory(category);
+        // Toggle the respective show state based on the selected category
+        toggleShow(category.toLowerCase());
+    };
 
 
     return (
@@ -264,8 +273,8 @@ function Homepage() {
                         </div>
                         <div className={styles.cancelBoxLogg}>
                             <img src={cancel} alt="cancelImg" className={styles.cancelImg} onClick={() => { setShowLogoutMob(false) }} />
-                        </div>                   
-                         </div>
+                        </div>
+                    </div>
                     <div className={styles.btnsMobLog}>
                         <button className={styles.logout}>Your Story</button>
                         <button className={styles.register} onClick={handleAddStory}>Add story</button>
@@ -294,119 +303,151 @@ function Homepage() {
                 </div>
             </div>
 
-            <div className={styles.foodCards}>
+
+            <div className={styles.foodCards} style={{ display: selectedCategory === "All" || selectedCategory === "Food" ? "block" : "none" }}>
                 {!isMobile && (
                     <h2 className={styles.top}>Top Stories About Food</h2>
                 )}
                 <div className={styles.cardContainer}>
-                    {cards.slice(0, showFood ? cards.length : 4).map((card, index) => (
-                        <div className={styles.card} key={index} onClick={() => handleStory(index)}>
-                            <div className={styles.cardImage} style={{ backgroundImage: `url(${card.images[0]})` }}>
-                                <div className={styles.toplay} ></div>
-                                <div className={styles.cardContent}>
-                                    <span className={styles.heading}>{card.heading}</span>
-                                    <span className={styles.description}>{card.description}</span>
+                    {selectedCategory === "All" || selectedCategory === "Food" ?
+                        foodCards.slice(0, showFood ? foodCards.length : 4).map((card, index) => (
+                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                                <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
+                                    <div className={styles.toplay}></div>
+                                    <div className={styles.cardContent}>
+                                        <span className={styles.heading}>{card.heading}</span>
+                                        <span className={styles.description}>{card.description}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                        : null
+                    }
                 </div>
-                {!showFood && cards.length > 4 && (
-                    <button className={styles.more} onClick={() => toggleShow("food")}>
-                        See More
-                    </button>
-                )}
+                <div className={styles.centeredButton}>
+                    {!showFood && foodCards.length > 4 && (
+                        <button className={styles.more} onClick={() => toggleShow("food")}>
+                            See More
+                        </button>
+                    )}
+                </div>
             </div>
 
-            <div className={styles.healthCards}>
+
+
+            <div className={styles.healthCards} style={{ display: selectedCategory === "All" || selectedCategory === "Health and Fitness" ? "block" : "none" }}>
                 <h2 className={styles.top}>Top Stories About Health & Fitness</h2>
                 <div className={styles.cardContainer}>
-                    {cards.slice(0, showHealth ? cards.length : 4).map((card, index) => (
-                        <div className={styles.card} key={index}>
-                            <div className={styles.cardImage} style={{ backgroundImage: `url(${card.images[0]})` }}>
-                                <div className={styles.toplay}></div>
-                                <div className={styles.cardContent}>
-                                    <span className={styles.heading}>{card.heading}</span>
-                                    <span className={styles.description}>{card.description}</span>
+                    {selectedCategory === "All" || selectedCategory === "Health and Fitness" ?
+                        healthCards.slice(0, showHealth ? healthCards.length : 4).map((card, index) => (
+                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                                <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
+                                    <div className={styles.toplay}></div>
+                                    <div className={styles.cardContent}>
+                                        <span className={styles.heading}>{card.heading}</span>
+                                        <span className={styles.description}>{card.description}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                        : null
+                    }
                 </div>
-                {!showHealth && cards.length > 4 && (
-                    <button className={styles.more} onClick={() => toggleShow("health")}>
+                <div className={styles.centeredButton}>
+                {!showHealth && healthCards.length > 4 && (
+                    <button className={styles.more} onClick={() => toggleShow("healthandfitness")}>
                         See More
                     </button>
                 )}
+                </div>
             </div>
 
 
-            <div className={styles.travelCards}>
+            <div className={styles.travelCards} style={{ display: selectedCategory === "All" || selectedCategory === "Travel" ? "block" : "none" }}>
                 <h2 className={styles.top}>Top Stories About Travel</h2>
                 <div className={styles.cardContainer}>
-                    {cards.slice(0, showTravel ? cards.length : 4).map((card, index) => (
-                        <div className={styles.card} key={index}>
-                            <div className={styles.cardImage} style={{ backgroundImage: `url(${card.images[0]})` }}>
-                                <div className={styles.toplay}></div>
-                                <div className={styles.cardContent}>
-                                    <span className={styles.heading}>{card.heading}</span>
-                                    <span className={styles.description}>{card.description}</span>
+                    {selectedCategory === "All" || selectedCategory === "Travel" ?
+                        travelCards.slice(0, showTravel ? travelCards.length : 4).map((card, index) => (
+                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                                <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
+                                    <div className={styles.toplay}></div>
+                                    <div className={styles.cardContent}>
+                                        <span className={styles.heading}>{card.heading}</span>
+                                        <span className={styles.description}>{card.description}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                        : null
+                    }
                 </div>
-                {!showTravel && cards.length > 4 && (
+                <div className={styles.centeredButton}>
+                {!showTravel && travelCards.length > 4 && (
                     <button className={styles.more} onClick={() => toggleShow("travel")}>
                         See More
                     </button>
                 )}
+                </div>
             </div>
 
 
-            <div className={styles.movieCards}>
+            <div className={styles.movieCards} style={{ display: selectedCategory === "All" || selectedCategory === "Movies" ? "block" : "none" }}>
                 <h2 className={styles.top}>Top Stories About Movies</h2>
                 <div className={styles.cardContainer}>
-                    {cards.slice(0, showMovies ? cards.length : 4).map((card, index) => (
-                        <div className={styles.card} key={index}>
-                            <div className={styles.cardImage} style={{ backgroundImage: `url(${card.images[0]})` }}>
-                                <div className={styles.toplay}></div>
-                                <div className={styles.cardContent}>
-                                    <span className={styles.heading}>{card.heading}</span>
-                                    <span className={styles.description}>{card.description}</span>
+                    {selectedCategory === "All" || selectedCategory === "Movies" ?
+                        movieCards.slice(0, showMovies ? movieCards.length : 4).map((card, index) => (
+                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                                <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
+                                    <div className={styles.toplay}></div>
+                                    <div className={styles.cardContent}>
+                                        <span className={styles.heading}>{card.heading}</span>
+                                        <span className={styles.description}>{card.description}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                        : null
+                    }
                 </div>
-                {!showMovies && cards.length > 4 && (
+                <div className={styles.centeredButton}>
+                {!showMovies && movieCards.length > 4 && (
                     <button className={styles.more} onClick={() => toggleShow("movies")}>
                         See More
                     </button>
                 )}
+                </div>
             </div>
 
-            <div className={styles.eduCards}>
+            <div className={styles.eduCards} style={{ display: selectedCategory === "All" || selectedCategory === "Education" ? "block" : "none" }}>
                 <h2 className={styles.top}>Top Stories About Education</h2>
                 <div className={styles.cardContainer}>
-                    {cards.slice(0, showEducation ? cards.length : 4).map((card, index) => (
-                        <div className={styles.card} key={index}>
-                            <div className={styles.cardImage} style={{ backgroundImage: `url(${card.images[0]})` }}>
-                                <div className={styles.toplay}></div>
-                                <div className={styles.cardContent}>
-                                    <span className={styles.heading}>{card.heading}</span>
-                                    <span className={styles.description}>{card.description}</span>
+                    {selectedCategory === "All" || selectedCategory === "Education" ?
+                        eduCards.slice(0, showEducation ? eduCards.length : 4).map((card, index) => (
+                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                                <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
+                                    <div className={styles.toplay}></div>
+                                    <div className={styles.cardContent}>
+                                        <span className={styles.heading}>{card.heading}</span>
+                                        <span className={styles.description}>{card.description}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                        : null
+                    }
                 </div>
-                {!showEducation && cards.length > 4 && (
+                <div className={styles.centeredButton}>
+                {!showEducation && eduCards.length > 4 && (
                     <button className={styles.more} onClick={() => toggleShow("education")}>
                         See More
                     </button>
                 )}
+                </div>
             </div>
+
+
+
+
 
             {story !== false && (
                 <Story onClose={() => setStory(false)} />
