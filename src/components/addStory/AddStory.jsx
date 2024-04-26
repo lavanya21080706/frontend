@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AddStory.module.css';
 import cancel from '../../assets/cancel.png'
+import { slidesData } from '../../apis/Story';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function AddStory({onClose}) {
+function AddStory({ onClose }) {
     const [slideCount, setSlideCount] = useState(3);
     const [slides, setSlides] = useState(Array.from({ length: 3 }, () => ({ heading: '', desc: '', image: '', cat: '' })));
     const [selectedSlide, setSelectedSlide] = useState(0);
     const [error, setError] = useState(false);
     const [categories, setCategories] = useState(Array.from({ length: 3 }, () => ''));
     const [categorySelected, setCategorySelected] = useState(false);
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768); 
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [categoryConsistent, setCategoryConsistent] = useState(true); // New state variable for category consistency
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -21,7 +26,17 @@ function AddStory({onClose}) {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []); 
+    }, []);
+
+    const checkCategoryConsistency = () => {
+        const category = slides[0].cat;
+        const consistent = slides.every(slide => slide.cat === category);
+        setCategoryConsistent(consistent); // Update category consistency state
+        if (!consistent) {
+            toast.error('Categories should be the same in all slides');
+        }
+        return consistent;
+    };
 
 
     const handleAddSlide = () => {
@@ -38,11 +53,8 @@ function AddStory({onClose}) {
         handleInputChange(0, 'heading', '');
         handleInputChange(0, 'desc', '');
         handleInputChange(0, 'image', '');
-        handleInputChange(0, 'cat', ''); 
+        handleInputChange(0, 'cat', '');
     }, []);
-
-
-
 
 
     const handleRemoveSlide = (index) => {
@@ -64,35 +76,45 @@ function AddStory({onClose}) {
         setSelectedSlide(index);
     };
 
-    const handleBtnClick = () => {
-        const currentSlide = slides[selectedSlide];
-        if (currentSlide.heading.trim() === '' || currentSlide.desc.trim() === '' || currentSlide.image.trim() === '' || currentSlide.cat.trim() === '') {
-            setError(true);
-        } else {
-            setError(false);
-
-        }
+    const handleClose = () => {
+        onClose(); 
     };
 
-    const handleInputChange = (index, field, value) => {
-        const updatedSlides = [...slides];
-        updatedSlides[index][field] = value;
-        setSlides(updatedSlides);
+    const handleBtnClick = async () => {
 
-        if (field === 'cat') {
-            const updatedCategories = [...categories];
-            updatedCategories[index] = value;
-            setCategories(updatedCategories);
-
-            if (index === 0) {
-                const updatedSlidesWithSameCategory = updatedSlides.map((slide, i) => ({
-                    ...slide,
-                    cat: value
+        if (!checkCategoryConsistency()) {
+            return;
+        }
+        // Validation check
+        const isValid = slides.every(slide => slide.heading.trim() !== '' && slide.desc.trim() !== '' && slide.image.trim() !== '' && slide.cat.trim() !== '');
+        console.log("slides", slides);
+        if (isValid) {
+            try {
+                // Extracting the slide data in the required format
+                const formattedSlides = slides.map(slide => ({
+                    heading: slide.heading,
+                    description: slide.desc,
+                    imageUrl: slide.image,
+                    category: slide.cat
                 }));
-                setSlides(updatedSlidesWithSameCategory);
+    
+                // Call the slidesData function from the API file with the formatted slide data
+                const response = await slidesData(formattedSlides);
+                console.log(response); // Log the response from the backend
+                toast.success('slides data stored successfully');
+                
+                handleClose();
+                // Reset the state or perform any other actions as needed
+            } catch (error) {
+                console.error(error);
+                // Handle any errors from the backend
             }
+        } else {
+            setError(true);
         }
     };
+    
+
     const handlePrevSlide = () => {
         setSelectedSlide(prevSlide => Math.max(0, prevSlide - 1));
     };
@@ -101,64 +123,70 @@ function AddStory({onClose}) {
         setSelectedSlide(prevSlide => Math.min(slideCount - 1, prevSlide + 1));
     };
 
+    const handleInputChange = (index, field, value) => {
+        const updatedSlides = [...slides];
+        updatedSlides[index][field] = value;
+        setSlides(updatedSlides);
+    };
+
     return (
         <div className={styles.overlay}>
             <div className={styles.container}>
                 <div className={styles.imgBox}>
-                    <img src={cancel} alt="cancel Img" className={styles.cancel} onClick={onClose}/>
+                    <img src={cancel} alt="cancel Img" className={styles.cancel} onClick={onClose} />
                     {isMobile ? (
-                         <span className={styles.six}>Add story to feed</span>
-                    ):(
-                         <span className={styles.six}>Add up to 6 slides</span>
+                        <span className={styles.six}>Add story to feed</span>
+                    ) : (
+                        <span className={styles.six}>Add up to 6 slides</span>
                     )}
-                   
+
                 </div>
                 <div className={styles.content}>
-                <div className={styles.slidesBox}>
-                    {slides.map((slide, index) => (
-                        <div
-                            className={`${styles.add} ${(selectedSlide === index || (index === 0 && selectedSlide === -1)) ? styles.selectedSlide : ''}`}
-                            key={index}
-                            onClick={() => handleSlideClick(index)}
-                        >
-                            <span className={styles.text}>Slide {index + 1}</span>
-                            {index >= 3 && (
-                                <img src={cancel} alt="remove" className={styles.cross} onClick={() => handleRemoveSlide(index)} />
-                            )}
-                        </div>
-                    ))}
+                    <div className={styles.slidesBox}>
+                        {slides.map((slide, index) => (
+                            <div
+                                className={`${styles.add} ${(selectedSlide === index || (index === 0 && selectedSlide === -1)) ? styles.selectedSlide : ''}`}
+                                key={index}
+                                onClick={() => handleSlideClick(index)}
+                            >
+                                <span className={styles.text}>Slide {index + 1}</span>
+                                {index >= 3 && (
+                                    <img src={cancel} alt="remove" className={styles.cross} onClick={() => handleRemoveSlide(index)} />
+                                )}
+                            </div>
+                        ))}
 
-                    {slideCount < 6 && (
-                        <div className={styles.add} onClick={handleAddSlide}>
-                            <span className={styles.text}>Add +</span>
-                        </div>
-                    )}
-                </div>
+                        {slideCount < 6 && (
+                            <div className={styles.add} onClick={handleAddSlide}>
+                                <span className={styles.text}>Add +</span>
+                            </div>
+                        )}
+                    </div>
 
-                {selectedSlide !== -1 && slides[selectedSlide] && (
-                    <form className={styles.formBox}>
-                        <div className={styles.box}>
-                            <label className={styles.labels}>Heading :</label>
-                            <input type="text" placeholder="Your heading" className={styles.inputBox} value={slides[selectedSlide].heading} onChange={(e) => handleInputChange(selectedSlide, 'heading', e.target.value)} />
-                        </div>
-                        <div className={styles.box}>
-                            <label className={styles.labels}>Description :</label>
-                            <textarea type="text" placeholder="Story Description" className={styles.inputBoxtext} value={slides[selectedSlide].desc} onChange={(e) => handleInputChange(selectedSlide, 'desc', e.target.value)} />
-                        </div>
-                        <div className={styles.box}>
-                            <label className={styles.labels}>Image :</label>
-                            <input type="text" placeholder="Add Image url" className={styles.inputBox} value={slides[selectedSlide].image} onChange={(e) => handleInputChange(selectedSlide, 'image', e.target.value)} />
-                        </div>
+                    {selectedSlide !== -1 && slides[selectedSlide] && (
+                        <form className={styles.formBox}>
+                            <div className={styles.box}>
+                                <label className={styles.labels}>Heading :</label>
+                                <input type="text" placeholder="Your heading" className={styles.inputBox} value={slides[selectedSlide].heading} onChange={(e) => handleInputChange(selectedSlide, 'heading', e.target.value)} />
+                            </div>
+                            <div className={styles.box}>
+                                <label className={styles.labels}>Description :</label>
+                                <textarea type="text" placeholder="Story Description" className={styles.inputBoxtext} value={slides[selectedSlide].desc} onChange={(e) => handleInputChange(selectedSlide, 'desc', e.target.value)} />
+                            </div>
+                            <div className={styles.box}>
+                                <label className={styles.labels}>Image :</label>
+                                <input type="text" placeholder="Add Image url" className={styles.inputBox} value={slides[selectedSlide].image} onChange={(e) => handleInputChange(selectedSlide, 'image', e.target.value)} />
+                            </div>
 
 
-                        <div className={styles.box}>
-                            <label className={styles.labels}>Category :</label>
-                            {selectedSlide === 0 ? (
+                            <div className={styles.box}>
+                                <label className={styles.labels}>Category :</label>
+
                                 <select
-                                className={`${styles.inputBoxcat} ${categorySelected ? styles.black : styles.grey}`} 
+                                    className={`${styles.inputBoxcat} ${categorySelected ? styles.black : styles.grey}`}
                                     value={slides[selectedSlide].cat}
-                                    onChange={(e) => {handleInputChange(selectedSlide, 'cat', e.target.value); setCategorySelected(true)}}
-                                >                   
+                                    onChange={(e) => { handleInputChange(selectedSlide, 'cat', e.target.value); setCategorySelected(true) }}
+                                >
                                     <option disabled selected value="" className={styles.dis}>Select Category</option>
                                     <option className={styles.options} value="food">food</option>
                                     <option className={styles.options} value="health and fitness">health and fitness</option>
@@ -166,26 +194,26 @@ function AddStory({onClose}) {
                                     <option className={styles.options} value="movies">movies</option>
                                     <option className={styles.options} value="education">education</option>
                                 </select>
-                            ) : (
-                                <input className={styles.catText} value={slides[selectedSlide].cat} placeholder='Select Category' />
-                            )}
-                        </div>
-                    </form>
-                )}
-               </div>
+
+                            </div>
+                        </form>
+                    )}
+                </div>
                 {error && (<span className={styles.error}>Please fill out all fields</span>)}
-                {isMobile?(
+                {!categoryConsistent && <span className={styles.error}>Categories should be the same in all slides</span>}
+
+                {isMobile ? (
                     <div className={styles.btnBox}>
-                    <button className={styles.post} onClick={handleBtnClick}>Post</button>
-                </div>
-                ):(
+                        <button className={styles.post} onClick={handleBtnClick}>Post</button>
+                    </div>
+                ) : (
                     <div className={styles.btnBox}>
-                    <button className={styles.prev} onClick={handlePrevSlide}>Previous</button>
+                        <button className={styles.prev} onClick={handlePrevSlide}>Previous</button>
                         <button className={styles.next} onClick={handleNextSlide}>Next</button>
-                    <button className={styles.post} onClick={handleBtnClick}>Post</button>
-                </div>
+                        <button className={styles.post} onClick={handleBtnClick}>Post</button>
+                    </div>
                 )}
-                
+
             </div>
         </div>
     );

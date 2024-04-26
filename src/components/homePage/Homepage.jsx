@@ -27,7 +27,6 @@ function Homepage() {
     const [addStory, setAddStory] = useState(false)
     const [showLogoutMob, setShowLogoutMob] = useState(false)
 
-
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 768);

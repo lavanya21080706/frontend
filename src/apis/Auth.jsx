@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const backendUrl = "http://localhost:8000"
-// const backendUrl = 'https://backend-production-a777.up.railway.app';
 
 
 export const userRegistration = async ({ name, password }) => {
