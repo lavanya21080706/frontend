@@ -7,6 +7,7 @@ import hamburger from '../../assets/hamburger.png'
 import Register from '../register/Register'
 import Login from '../login/Login'
 import AddStory from "../addStory/AddStory";
+import cancel from '../../assets/cancelImg.png'
 
 function Homepage() {
     const categories = ["All", "Food", "Health and Fitness", "Travel", "Movies", "Education"]
@@ -24,6 +25,8 @@ function Homepage() {
     const [showRegistration, setShowRegistration] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
     const [addStory, setAddStory] = useState(false)
+    const [showLogoutMob, setShowLogoutMob] = useState(false)
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -78,8 +81,8 @@ function Homepage() {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('isLoggedIn');
-        setLogin(false); 
-        setShowLogout(false); 
+        setLogin(false);
+        setShowLogout(false);
     };
 
     const handleRegisterClick = () => {
@@ -108,7 +111,7 @@ function Homepage() {
         setAddStory(true)
     }
 
-    const handleCloseStory=()=>{
+    const handleCloseStory = () => {
         setAddStory(false)
     }
 
@@ -199,6 +202,10 @@ function Homepage() {
         setStory(true);
     }
 
+    const handleShowLogoutMob = () => {
+        setShowLogoutMob(true)
+    }
+
 
     return (
         <div className={styles.container}>
@@ -210,7 +217,7 @@ function Homepage() {
                     <span className={styles.swip}>SwipTory</span>
                 )}
                 {isMobile && (
-                    <img src={hamburger} className={styles.hamburger} alt="hamburger" onClick={handleShowLogout} />
+                    <img src={hamburger} className={styles.hamburger} alt="hamburger" onClick={handleShowLogoutMob} />
                 )}
                 {!isMobile && login && (
                     <div className={styles.btnslogin}>
@@ -230,14 +237,47 @@ function Homepage() {
                     </div>
                 )}
             </div>
-            {showLogout && (
+            {showLogout && !isMobile && (
                 <div className={styles.logoutBox}>
                     <span className={styles.name}>{userName}</span>
                     <button className={styles.logout} onClick={handleLogout}>Logout</button>
                 </div>
-            )
+            )}
 
-            }
+            {showLogoutMob && isMobile && (
+                <div className={styles.loginBox}>
+                    <div className={styles.cancelBox}>
+                        <img src={cancel} alt="cancelImg" className={styles.cancelImg} onClick={() => { setShowLogoutMob(false) }} />
+                    </div>
+                    <div className={styles.btnsMob}>
+                        <button className={styles.login} onClick={handleLoginClick}>Login</button>
+                        <button className={styles.register} onClick={handleRegisterClick}>Register</button>
+                    </div>
+                </div>
+            )}
+
+            {showLogoutMob && isMobile && login && (
+                <div className={styles.loginBox}>
+                    <div className={styles.cancelBoxlog}>
+                        <div className={styles.profileBox}>
+                            <img src={profile} alt="Profile" className={styles.profileImg} />
+                            <span className={styles.name}>{userName}</span>
+                        </div>
+                        <div className={styles.cancelBoxLogg}>
+                            <img src={cancel} alt="cancelImg" className={styles.cancelImg} onClick={() => { setShowLogoutMob(false) }} />
+                        </div>                   
+                         </div>
+                    <div className={styles.btnsMobLog}>
+                        <button className={styles.logout}>Your Story</button>
+                        <button className={styles.register} onClick={handleAddStory}>Add story</button>
+                        <div className={`${styles.bookmarkBox} ${selectBookmark ? styles.selectedb : ''}`} onClick={handleClick}>
+                            <img src={bookmark} alt="bookmark" className={styles.bookmark} />
+                            <span className={styles.text}>Bookmarks</span>
+                        </div>
+                        <button className={styles.logout} onClick={handleLogout}>Logout</button>
+                    </div>
+                </div>
+            )}
 
             <div className={styles.categoriesContainer}>
                 <div className={styles.categories}>

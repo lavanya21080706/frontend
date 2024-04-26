@@ -93,6 +93,14 @@ function AddStory({onClose}) {
             }
         }
     };
+    const handlePrevSlide = () => {
+        setSelectedSlide(prevSlide => Math.max(0, prevSlide - 1));
+    };
+
+    const handleNextSlide = () => {
+        setSelectedSlide(prevSlide => Math.min(slideCount - 1, prevSlide + 1));
+    };
+
     return (
         <div className={styles.overlay}>
             <div className={styles.container}>
@@ -172,8 +180,8 @@ function AddStory({onClose}) {
                 </div>
                 ):(
                     <div className={styles.btnBox}>
-                    <button className={styles.prev}>Previous</button>
-                    <button className={styles.next}>Next</button>
+                    <button className={styles.prev} onClick={handlePrevSlide}>Previous</button>
+                        <button className={styles.next} onClick={handleNextSlide}>Next</button>
                     <button className={styles.post} onClick={handleBtnClick}>Post</button>
                 </div>
                 )}
