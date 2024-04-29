@@ -41,12 +41,11 @@ function Homepage() {
             const foodResponse = await getDataByCategory("food");
             if (foodResponse && Array.isArray(foodResponse)) {
                 const cardsData = foodResponse.map(item => ({
-                    id: item._id, // Assuming each item has an `_id` property
+                    id: item._id, 
                     heading: item.slides[0].heading,
                     description: item.slides[0].description,
-                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                    imageUrl: item.slides[0].imageUrl 
                 }));
-                // console.log('')
                 setFoodCards(cardsData);
             }
 
@@ -55,10 +54,10 @@ function Homepage() {
             console.log('health', healthResponse)
             if (healthResponse && Array.isArray(healthResponse)) {
                 const cardsData = healthResponse.map(item => ({
-                    id: item._id, // Assuming each item has an `_id` property
+                    id: item._id, 
                     heading: item.slides[0].heading,
                     description: item.slides[0].description,
-                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                    imageUrl: item.slides[0].imageUrl 
                 }));
                 setHealthCards(cardsData);
             }
@@ -67,10 +66,10 @@ function Homepage() {
             console.log('travel', travelResponse)
             if (travelResponse && Array.isArray(travelResponse)) {
                 const cardsData = travelResponse.map(item => ({
-                    id: item._id, // Assuming each item has an `_id` property
+                    id: item._id,
                     heading: item.slides[0].heading,
                     description: item.slides[0].description,
-                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                    imageUrl: item.slides[0].imageUrl 
                 }));
                 setTravelCards(cardsData);
             }
@@ -79,10 +78,10 @@ function Homepage() {
             console.log('movies', movieResponse)
             if (movieResponse && Array.isArray(movieResponse)) {
                 const cardsData = movieResponse.map(item => ({
-                    id: item._id, // Assuming each item has an `_id` property
+                    id: item._id,
                     heading: item.slides[0].heading,
                     description: item.slides[0].description,
-                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                    imageUrl: item.slides[0].imageUrl 
                 }));
                 setMovieCards(cardsData);
             }
@@ -90,10 +89,10 @@ function Homepage() {
             const eduResponse = await getDataByCategory("education");
             if (eduResponse && Array.isArray(eduResponse)) {
                 const cardsData = eduResponse.map(item => ({
-                    id: item._id, // Assuming each item has an `_id` property
+                    id: item._id, 
                     heading: item.slides[0].heading,
                     description: item.slides[0].description,
-                    imageUrl: item.slides[0].imageUrl // Assuming imageUrl is a single URL
+                    imageUrl: item.slides[0].imageUrl 
                 }));
                 setEduCards(cardsData);
             }
@@ -200,17 +199,15 @@ function Homepage() {
         setShowLogout(!showLogout)
     }
 
-    const handleStory = () => {
-        setStory(true);
-    }
-
+    const handleStory = (cardId) => {
+        setStory(cardId);
+    };
     const handleShowLogoutMob = () => {
         setShowLogoutMob(true)
     }
 
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);
-        // Toggle the respective show state based on the selected category
         toggleShow(category.toLowerCase());
     };
 
@@ -311,7 +308,7 @@ function Homepage() {
                 <div className={styles.cardContainer}>
                     {selectedCategory === "All" || selectedCategory === "Food" ?
                         foodCards.slice(0, showFood ? foodCards.length : 4).map((card, index) => (
-                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                            <div className={styles.card} key={index} onClick={() => handleStory(card.id)}>
                                 <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
                                     <div className={styles.toplay}></div>
                                     <div className={styles.cardContent}>
@@ -340,7 +337,7 @@ function Homepage() {
                 <div className={styles.cardContainer}>
                     {selectedCategory === "All" || selectedCategory === "Health and Fitness" ?
                         healthCards.slice(0, showHealth ? healthCards.length : 4).map((card, index) => (
-                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                            <div className={styles.card} key={index} onClick={() => handleStory(card.id)}>
                                 <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
                                     <div className={styles.toplay}></div>
                                     <div className={styles.cardContent}>
@@ -368,7 +365,7 @@ function Homepage() {
                 <div className={styles.cardContainer}>
                     {selectedCategory === "All" || selectedCategory === "Travel" ?
                         travelCards.slice(0, showTravel ? travelCards.length : 4).map((card, index) => (
-                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                            <div className={styles.card} key={index} onClick={() => handleStory(card.id)}>
                                 <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
                                     <div className={styles.toplay}></div>
                                     <div className={styles.cardContent}>
@@ -396,7 +393,7 @@ function Homepage() {
                 <div className={styles.cardContainer}>
                     {selectedCategory === "All" || selectedCategory === "Movies" ?
                         movieCards.slice(0, showMovies ? movieCards.length : 4).map((card, index) => (
-                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                            <div className={styles.card} key={index} onClick={() => handleStory(card.id)}>
                                 <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
                                     <div className={styles.toplay}></div>
                                     <div className={styles.cardContent}>
@@ -423,12 +420,13 @@ function Homepage() {
                 <div className={styles.cardContainer}>
                     {selectedCategory === "All" || selectedCategory === "Education" ?
                         eduCards.slice(0, showEducation ? eduCards.length : 4).map((card, index) => (
-                            <div className={styles.card} key={index} onClick={() => handleStory(index)}>
+                            <div className={styles.card} key={index} onClick={() => handleStory(card.id)}>
                                 <div className={styles.cardImage} style={{ backgroundImage: `url(${card.imageUrl})` }}>
                                     <div className={styles.toplay}></div>
                                     <div className={styles.cardContent}>
                                         <span className={styles.heading}>{card.heading}</span>
                                         <span className={styles.description}>{card.description}</span>
+                                        {/* <span className={styles.description}>{card.id}</span> */}
                                     </div>
                                 </div>
                             </div>
@@ -450,7 +448,7 @@ function Homepage() {
 
 
             {story !== false && (
-                <Story onClose={() => setStory(false)} />
+                 <Story cardId={story} onClose={() => setStory(false)} />
             )}
 
             {showRegistration && (

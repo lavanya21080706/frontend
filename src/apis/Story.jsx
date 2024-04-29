@@ -18,20 +18,7 @@ export const slidesData = async (slides) => {
   }
 };
 
-// getting all stories
-
-// export const getData = async () => {
-//     try {
-//       const reqUrl = `${backendUrl}/api/ver1/story/getStory`; 
-//       const response = await axios.get(reqUrl); 
-//    console.log(response.data)
-//       return response.data;
-//     } catch (error) {
-//       console.error(error);
-//       throw error;
-//     }
-//   };
-
+//get all stories
 export const getAllData = async () => {
     try {
       const reqUrl = `${backendUrl}/api/ver1/story/all`;
