@@ -15,11 +15,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { likeSlide } from '../../apis/Story'
 import { dislikeSlide } from '../../apis/Story';
 import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
+
 
 function Share({ onClose }) {
     const { cardId } = useParams();
-    // const cardId="663334003de93e0d32d41523"
-    console.log("cardId",cardId)
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const [likedSlides, setLikedSlides] = useState([]);
@@ -29,6 +30,8 @@ function Share({ onClose }) {
     const [cardData, setCardData] = useState(null);
     const [loginPrompt, setLoginPrompt] = useState(false)
     const [toastmsg, setToast] = useState(false)
+
+    const history = useHistory();
 
     const handlesharelink = () => {
         setLoginPrompt(true);
@@ -95,8 +98,8 @@ function Share({ onClose }) {
     }, []);
 
     const handleLikeClick = async () => {
-            setLoginPrompt(true);
-       
+        setLoginPrompt(true);
+
         const isCurrentlyLiked = likedSlides.includes(currentImageIndex);
         try {
             if (isCurrentlyLiked) {
@@ -123,8 +126,9 @@ function Share({ onClose }) {
 
     const handleBookmarkClick = async () => {
         setLoginPrompt(true);
+        // onClose()
         const isCurrentlyBookmarked = bookmarkedSlides.includes(currentImageIndex);
-        
+
         try {
             if (isCurrentlyBookmarked) {
                 // Unbookmark the slide
@@ -180,8 +184,11 @@ function Share({ onClose }) {
         return null;
     }
 
+
+
     const handleLoginSubmit = () => {
         setLoginPrompt(false);
+        history.push('/'); // Redirect to the homepage
     };
 
 

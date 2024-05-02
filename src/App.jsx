@@ -16,7 +16,6 @@ function App() {
           <Route path="/card/:cardId" element={<Share />} />
         </Routes>
       </BrowserRouter>
-      {/* <Share/> */}
    </>
   )
 }
