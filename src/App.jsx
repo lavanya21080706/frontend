@@ -13,7 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/card/:id/:storyId" element={<Share />} />
+          <Route path="/card/:id" element={<Share />} />
         </Routes>
       </BrowserRouter>
    </>

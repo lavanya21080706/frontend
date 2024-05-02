@@ -16,8 +16,10 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { likeSlide } from '../../apis/Story'
 import { dislikeSlide } from '../../apis/Story';
+import { useParams } from 'react-router-dom';
 
-function Share({ cardId, onClose }) {
+function Share({ onClose }) {
+    const { cardId } = useParams();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const [likedSlides, setLikedSlides] = useState([]);
@@ -28,8 +30,7 @@ function Share({ cardId, onClose }) {
     const [loginPrompt, setLoginPrompt] = useState(false)
     const [toastmsg, setToast] = useState(false)
 
-    // const baseURL = 'https://lavanya21080706.github.io/frontend/';
-
+    // console.log("idd",id)
     const handlesharelink = (id, storyId) => {
 
         setLoginPrompt(true);
