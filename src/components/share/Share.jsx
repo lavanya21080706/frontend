@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { likeSlide } from '../../apis/Story'
 import { dislikeSlide } from '../../apis/Story';
 import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -31,7 +31,7 @@ function Share({ onClose }) {
     const [loginPrompt, setLoginPrompt] = useState(false)
     const [toastmsg, setToast] = useState(false)
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handlesharelink = () => {
         setLoginPrompt(true);
@@ -188,7 +188,8 @@ function Share({ onClose }) {
 
     const handleLoginSubmit = () => {
         setLoginPrompt(false);
-        history.push('/'); // Redirect to the homepage
+        navigate('/');
+        onClose();
     };
 
 
