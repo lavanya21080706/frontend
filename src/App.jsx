@@ -13,9 +13,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/card/:id" element={<Share />} />
+          <Route path="/card/:cardId" element={<Share />} />
         </Routes>
       </BrowserRouter>
+      {/* <Share/> */}
    </>
   )
 }

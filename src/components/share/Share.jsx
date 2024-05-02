@@ -11,15 +11,15 @@ import bookmarked from '../../assets/blue.png'
 import { getStory } from "../../apis/Story";
 import { addBookmark, getBookmarks, deleteBookmark } from "../../apis/Bookmark";
 import Login from "../login/Login";
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { likeSlide } from '../../apis/Story'
 import { dislikeSlide } from '../../apis/Story';
 import { useParams } from 'react-router-dom';
 
 function Share({ onClose }) {
-    const { cardId } = useParams();
+    // const { cardId } = useParams();
+    const cardId="663334003de93e0d32d41523"
+    console.log("cardId",cardId)
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const [likedSlides, setLikedSlides] = useState([]);
@@ -30,9 +30,7 @@ function Share({ onClose }) {
     const [loginPrompt, setLoginPrompt] = useState(false)
     const [toastmsg, setToast] = useState(false)
 
-    // console.log("idd",id)
-    const handlesharelink = (id, storyId) => {
-
+    const handlesharelink = () => {
         setLoginPrompt(true);
     };
 
