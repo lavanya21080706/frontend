@@ -17,8 +17,8 @@ import { dislikeSlide } from '../../apis/Story';
 import { useParams } from 'react-router-dom';
 
 function Share({ onClose }) {
-    // const { cardId } = useParams();
-    const cardId="663334003de93e0d32d41523"
+    const { cardId } = useParams();
+    // const cardId="663334003de93e0d32d41523"
     console.log("cardId",cardId)
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [progress, setProgress] = useState(0);
