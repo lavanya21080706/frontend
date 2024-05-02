@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from './Story.module.css';
+import styles from './Share.module.css';
 import left from '../../assets/leftArrow.png';
 import right from '../../assets/right.png';
 import cancel from '../../assets/cross.png'
@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { likeSlide } from '../../apis/Story'
 import { dislikeSlide } from '../../apis/Story';
 
-function Story({ cardId, onClose }) {
+function Share({ cardId, onClose }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const [likedSlides, setLikedSlides] = useState([]);
@@ -28,28 +28,11 @@ function Story({ cardId, onClose }) {
     const [loginPrompt, setLoginPrompt] = useState(false)
     const [toastmsg, setToast] = useState(false)
 
-    const baseURL = 'https://lavanya21080706.github.io/frontend/';
+    // const baseURL = 'https://lavanya21080706.github.io/frontend/';
 
-    const handlesharelink = (id) => {
+    const handlesharelink = (id, storyId) => {
 
-        const url = `${baseURL}#/card/${id}`;
-        console.log("id", id)
-        navigator.clipboard
-            .writeText(url)
-            .then(() => {
-                setToast(true);
-                setTimeout(() => {
-                    setToast(false);
-                }, 1000);
-              
-            })
-            .catch((error) => {
-                console.error('Failed to copy the URL to the clipboard:', error);
-                toast.error('Failed to copy the Card Link', {
-                    autoClose: 1000,
-                    hideProgressBar: true,
-                });
-            });
+        setLoginPrompt(true);
     };
 
     useEffect(() => {
@@ -113,11 +96,8 @@ function Story({ cardId, onClose }) {
     }, []);
 
     const handleLikeClick = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
             setLoginPrompt(true);
-            return;
-        }
+       
         const isCurrentlyLiked = likedSlides.includes(currentImageIndex);
         try {
             if (isCurrentlyLiked) {
@@ -143,12 +123,9 @@ function Story({ cardId, onClose }) {
     };
 
     const handleBookmarkClick = async () => {
+        setLoginPrompt(true);
         const isCurrentlyBookmarked = bookmarkedSlides.includes(currentImageIndex);
-        const token = localStorage.getItem('token');
-        if (!token) {
-            setLoginPrompt(true);
-            return;
-        }
+        
         try {
             if (isCurrentlyBookmarked) {
                 // Unbookmark the slide
@@ -230,7 +207,7 @@ function Story({ cardId, onClose }) {
                                 </div>
                                 <div className={styles.shareBox}>
                                     <img src={cancel} alt="cancel Image" className={styles.cancel} onClick={handleCancelClick} />
-                                    <img src={share} alt="share Image" className={styles.share} onClick={() => { handlesharelink(cardId) }} />
+                                    <img src={share} alt="share Image" className={styles.share} onClick={() => { handlesharelink(cardData.slides[currentImageIndex]._id, cardId) }} />
                                 </div>
                             </div>
                             <div>
@@ -273,7 +250,7 @@ function Story({ cardId, onClose }) {
                                     </div>
                                     <div className={styles.shareBox}>
                                         <img src={cancel} alt="cancel Image" className={styles.cancel} onClick={handleCancelClick} />
-                                        <img src={share} alt="share Image" className={styles.share} onClick={() => { handlesharelink(cardId) }} />
+                                        <img src={share} alt="share Image" className={styles.share} onClick={() => { handlesharelink(cardData.slides[currentImageIndex]._id, cardId) }} />
                                     </div>
                                 </div>
                                 <div>
@@ -306,6 +283,6 @@ function Story({ cardId, onClose }) {
     );
 }
 
-export default Story;
+export default Share;
 
 

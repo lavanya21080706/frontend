@@ -41,7 +41,11 @@ function Register({onClose}){
             if (response && response.success) {
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('username', response.name);
-                toast.success('User registered successfully');
+                localStorage.setItem('userId', response.userId); 
+                toast.success('User registered successfully', {
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                });
                 handleClose();
             } 
         } catch (error) {

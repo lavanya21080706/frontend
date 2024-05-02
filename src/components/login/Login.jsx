@@ -35,11 +35,16 @@ function Login({onClose}) {
     
         try {
             const response = await userLogin({ ...data });
+            console.log(response);
     
             if (response && response.success) {
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('username', response.name);
-                toast.success('User Logged In successfully');
+                localStorage.setItem('userId', response.userId); 
+                toast.success('User Logged In successfully', {
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                });
                 handleClose();
             } else {
                 if (response.status === 404) {

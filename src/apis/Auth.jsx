@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const backendUrl = "http://localhost:8000"
+// const backendUrl = "http://localhost:8000"
+
+const backendUrl = "https://backend-g9k3.onrender.com"
 
 
 export const userRegistration = async ({ name, password }) => {
